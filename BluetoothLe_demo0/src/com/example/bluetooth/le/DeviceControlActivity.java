@@ -114,21 +114,35 @@ public class DeviceControlActivity extends Activity {
             //发现有可支持的服务
             else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
             	//写数据的服务和characteristic
-            	mnotyGattService = mBluetoothLeService.getSupportedGattServices(UUID.fromString("0000ffe5-0000-1000-8000-00805f9b34fb"));
-                characteristic = mnotyGattService.getCharacteristic(UUID.fromString("0000ffe9-0000-1000-8000-00805f9b34fb"));
+            	mnotyGattService = mBluetoothLeService.getSupportedGattServices(UUID.fromString("00010203-0405-0607-0809-0a0b0c0d1910"));
+                characteristic = mnotyGattService.getCharacteristic(UUID.fromString("00010203-0405-0607-0809-0a0b0c0d2b11"));
                 //读数据的服务和characteristic
-                readMnotyGattService = mBluetoothLeService.getSupportedGattServices(UUID.fromString("0000ffe0-0000-1000-8000-00805f9b34fb"));
-                readCharacteristic = readMnotyGattService.getCharacteristic(UUID.fromString("0000ffe4-0000-1000-8000-00805f9b34fb"));
+                readMnotyGattService = mBluetoothLeService.getSupportedGattServices(UUID.fromString("00010203-0405-0607-0809-0a0b0c0d1910"));
+                readCharacteristic = readMnotyGattService.getCharacteristic(UUID.fromString("00010203-0405-0607-0809-0a0b0c0d2b10"));
             } 
             //显示数据
             else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
             	//将数据显示在mDataField上
             	String data = intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
             	System.out.println("data----" + data);
-                displayData(data);
+            	String s4 = toHexString(data); 
+                displayData(s4);
             }
         }
     };    
+    
+    public static String toHexString(String s) 
+    { 
+    String str=""; 
+    for (int i=0;i<s.length();i++) 
+    { 
+    int ch = (int)s.charAt(i); 
+    String s4 = Integer.toHexString(ch); 
+    str = str + s4; 
+    } 
+    return str; 
+    } 
+    
     private void clearUI() {
         //mGattServicesList.setAdapter((SimpleExpandableListAdapter) null);
         mDataField.setText(R.string.no_data);
